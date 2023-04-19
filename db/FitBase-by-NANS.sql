@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS Gym
 
 CREATE TABLE IF NOT EXISTS MarketingConsultant
 (
-    mcid       int PRIMARY KEY,
-    first_name varchar(50) NOT NULL,
-    last_name  varchar(50) NOT NULL
+    mcid  int PRIMARY KEY,
+    first varchar(50) NOT NULL,
+    last  varchar(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Membership
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS Membership
 
 CREATE TABLE IF NOT EXISTS Manager
 (
-    first_name    varchar(50) NOT NULL,
-    last_name     varchar(50) NOT NULL,
+    first    varchar(50) NOT NULL,
+    last     varchar(50) NOT NULL,
     email         varchar(50) NOT NULL,
     phoneNum      varchar(20) NOT NULL,
     mnid          int PRIMARY KEY
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS Manager
 CREATE TABLE IF NOT EXISTS Member
 (
     mid        int PRIMARY KEY,
-    first      varchar(50) NOT NULL,
-    last       varchar(50) NOT NULL,
+    first_name      varchar(50) NOT NULL,
+    last_name       varchar(50) NOT NULL,
     gender     varchar(50) NOT NULL,
     years      int         NOT NULL NOT NULL,
     age        int         NOT NULL,
@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS Member
 
 CREATE TABLE IF NOT EXISTS Trainer
 (
-    first  varchar(50) NOT NULL,
-    last   varchar(50) NOT NULL,
+    first_name  varchar(50) NOT NULL,
+    last_name   varchar(50) NOT NULL,
     tid    int PRIMARY KEY,
     gender varchar(50) NOT NULL,
     mnid   int,
@@ -181,3 +181,4 @@ CREATE TABLE IF NOT EXISTS Discount
     msid int,
     FOREIGN KEY (msid) REFERENCES Membership (msid)
 );
+
