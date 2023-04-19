@@ -12,7 +12,7 @@ def get_classes():
     # get a cursor object from the database
     
     query = '''
-        SELECT *
+        SELECT name
         FROM Class
     '''
     # use cursor to query the database for a list of products

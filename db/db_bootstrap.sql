@@ -10,7 +10,7 @@ create database FitBase;
 -- all privilages to the new database we just created. 
 -- TODO: If you changed the name of the database above, you need 
 -- to change it here too.
-grant all privileges on cool_db.* to 'FitBase'@'%';
+grant all privileges on FitBase.* to 'webapp'@'%';
 flush privileges;
 
 -- Move into the database we just created.
