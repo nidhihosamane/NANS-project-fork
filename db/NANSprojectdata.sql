@@ -1,4 +1,255 @@
+CREATE DATABASE IF NOT EXISTS FitBase;
+# DROP DATABASE FitBase;
+SHOW DATABASES;
 
+USE FitBase;
+
+CREATE TABLE IF NOT EXISTS Gym
+(
+    gid       int PRIMARY KEY,
+    name      varchar(50) NOT NULL,
+    openTime  time        NOT NULL,
+    closeTime time        NOT NULL,
+    street    varchar(50) NOT NULL,
+    city      varchar(50) NOT NULL,
+    state     varchar(2)  NOT NULL,
+    zip       int         NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS MarketingConsultant
+(
+    mcid  int PRIMARY KEY,
+    first varchar(50) NOT NULL,
+    last  varchar(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Membership
+(
+    msid  int PRIMARY KEY,
+    type  varchar(50) NOT NULL,
+    price double      NOT NULL,
+    mcid  int,
+    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
+);
+
+CREATE TABLE IF NOT EXISTS Manager
+(
+    first    varchar(50) NOT NULL,
+    last     varchar(50) NOT NULL,
+    email         varchar(50) NOT NULL,
+    phoneNum      varchar(20) NOT NULL,
+    mnid          int PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS Member
+(
+    mid        int PRIMARY KEY,
+    first_name      varchar(50) NOT NULL,
+    last_name       varchar(50) NOT NULL,
+    gender     varchar(50) NOT NULL,
+    years      int         NOT NULL NOT NULL,
+    age        int         NOT NULL,
+    mcid       int,
+    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid),
+    msid       int,
+    FOREIGN KEY (msid) REFERENCES Membership (msid),
+    phoneNum_1 varchar(20) NOT NULL,
+    phoneNum_2 varchar(20),
+    email_1    varchar(50) NOT NULL,
+    email_2    varchar(50)
+);
+
+CREATE TABLE IF NOT EXISTS Trainer
+(
+    first  varchar(50) NOT NULL,
+    last   varchar(50) NOT NULL,
+    tid    int PRIMARY KEY,
+    gender varchar(50) NOT NULL,
+    mnid   int,
+    gid    int,
+    mcid   int,
+    FOREIGN KEY (mnid) REFERENCES Manager (mnid),
+    FOREIGN KEY (gid) REFERENCES Gym (gid),
+    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
+);
+
+CREATE TABLE IF NOT EXISTS Specialities
+(
+    tid       int,
+    specialty varchar(50) NOT NULL,
+    FOREIGN KEY (tid) REFERENCES Trainer (tid)
+);
+
+CREATE TABLE IF NOT EXISTS Gym_Mem
+(
+    mid int,
+    gid int NOT NULL,
+    FOREIGN KEY (mid) REFERENCES Member (mid)
+);
+
+CREATE TABLE IF NOT EXISTS Certs
+(
+    tid           int,
+    certification varchar(50) NOT NULL,
+    FOREIGN KEY (tid) REFERENCES Trainer (tid)
+);
+
+CREATE TABLE IF NOT EXISTS Interests
+(
+    mid      int,
+    interest varchar(50),
+    FOREIGN KEY (mid) REFERENCES Member (mid)
+);
+
+CREATE TABLE IF NOT EXISTS Orders
+(
+    totalCost double NOT NULL,
+    oid       int PRIMARY KEY,
+    mcid      int,
+    mid       int,
+    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid),
+    FOREIGN KEY (mid) REFERENCES Member (mid)
+);
+
+CREATE TABLE IF NOT EXISTS Product
+(
+    pid   int PRIMARY KEY,
+    price double      NOT NULL,
+    name  varchar(50) NOT NULL,
+    type  varchar(50) NOT NULL
+);
+
+# DROP TABLE IF EXISTS Equipment;
+CREATE TABLE IF NOT EXISTS Equipment
+(
+    eid        int PRIMARY KEY,
+    difficulty varchar(10)
+);
+
+CREATE TABLE IF NOT EXISTS Prod_Order
+(
+    oid int,
+    pid int,
+    FOREIGN KEY (oid) REFERENCES Orders (oid),
+    FOREIGN KEY (pid) REFERENCES Product (pid)
+);
+
+CREATE TABLE IF NOT EXISTS Class
+(
+    cid        int PRIMARY KEY,
+    activity   varchar(50) NOT NULL,
+    name       varchar(50) NOT NULL,
+    startTime  datetime    NOT NULL,
+    endTime    datetime    NOT NULL,
+    roomNum    int         NOT NULL,
+    totalSeats int         NOT NULL,
+    tid        int,
+    FOREIGN KEY (tid) REFERENCES Trainer (tid),
+    mcid       int,
+    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
+);
+
+CREATE TABLE IF NOT EXISTS Class_Mem
+(
+    mid int,
+    cid int,
+    FOREIGN KEY (mid) REFERENCES Member (mid),
+    FOREIGN KEY (cid) REFERENCES Class (cid)
+);
+
+CREATE TABLE IF NOT EXISTS Train_Equip
+(
+    tid int,
+    eid int,
+    FOREIGN KEY (tid) REFERENCES Trainer (tid),
+    FOREIGN KEY (eid) REFERENCES Equipment (eid)
+);
+
+CREATE TABLE IF NOT EXISTS PersonalTraining
+(
+    ptid     int PRIMARY KEY,
+    length   int         NOT NULL,
+    activity varchar(50) NOT NULL,
+    tid      int,
+    FOREIGN KEY (tid) REFERENCES Trainer (tid),
+    mid      int,
+    FOREIGN KEY (mid) REFERENCES Member (mid)
+);
+
+CREATE TABLE IF NOT EXISTS Discount
+(
+    type varchar(50),
+    msid int,
+    FOREIGN KEY (msid) REFERENCES Membership (msid)
+);
+
+insert into Manager (first, last, email, phoneNum, mnid) values ('Ignaz', 'Maharg', 'imaharg0@youtube.com', 213704, 760112);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Kally', 'Lace', 'klace1@ibm.com', 205447, 406457);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Bonita', 'Capstake', 'bcapstake2@51.la', 236573, 596835);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Had', 'Carpe', 'hcarpe3@seattletimes.com', 743740, 617784);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Alair', 'Kennagh', 'akennagh4@tinypic.com', 951553, 861790);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Francene', 'Gawler', 'fgawler5@ucsd.edu', 598409, 691445);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Ulrica', 'Manoch', 'umanoch6@xinhuanet.com', 948545, 270934);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Susanne', 'Espie', 'sespie7@free.fr', 549227, 964729);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Gillian', 'Scain', 'gscain8@msu.edu', 221644, 184063);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Marty', 'Jagiello', 'mjagiello9@tripod.com', 100394, 648372);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Coretta', 'Morl', 'cmorla@virginia.edu', 106519, 246048);
+insert into Manager (first, last, email, phoneNum, mnid) values ('Edie', 'Shapero', 'eshaperob@amazon.com', 533592, 531160);
+
+
+insert into MarketingConsultant (mcid, first, last) values (951912, 'Alasteir', 'Grieves');
+insert into MarketingConsultant (mcid, first, last) values (342718, 'Aylmar', 'Piner');
+insert into MarketingConsultant (mcid, first, last) values (197361, 'Ambur', 'Escalante');
+insert into MarketingConsultant (mcid, first, last) values (015199, 'Xever', 'Mendus');
+insert into MarketingConsultant (mcid, first, last) values (189856, 'Amitie', 'Thacke');
+insert into MarketingConsultant (mcid, first, last) values (118023, 'Gillian', 'Fattorini');
+insert into MarketingConsultant (mcid, first, last) values (803303, 'Robinia', 'Baverstock');
+insert into MarketingConsultant (mcid, first, last) values (299272, 'Flint', 'Arthur');
+insert into MarketingConsultant (mcid, first, last) values (278414, 'Luci', 'Chapellow');
+insert into MarketingConsultant (mcid, first, last) values (134843, 'Zebulon', 'De Bruijn');
+insert into MarketingConsultant (mcid, first, last) values (504920, 'Carolynn', 'Buckel');
+insert into MarketingConsultant (mcid, first, last) values (697772, 'Devi', 'Owbrick');
+insert into MarketingConsultant (mcid, first, last) values (870729, 'Georgia', 'Whyler');
+insert into MarketingConsultant (mcid, first, last) values (346064, 'Terrye', 'Pickworth');
+
+
+insert into Membership (msid, type, price, mcid) values (440966, 'Gold', 150.89, 803303);
+insert into Membership (msid, type, price, mcid) values (189048, 'Silver', 125.81, 346064);
+insert into Membership (msid, type, price, mcid) values (540269, 'Bronze', 98.31, 870729);
+
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (973240, 'Fitbase- NY', '4:36:00', '8:19:00', '3502 8th Parkway', 'Manhattan', 'NY', 31234);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (442239, 'Fitbase- BOS', '5:34:00', '7:44:00', '63980 Little Fleur Court', 'Boston', 'MA', 76100);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (031457, 'Fitbase- ATL', '5:00:00', '7:55:00', '0104 Veith Hill', 'Georgia', 'GA', 78275);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (546692, 'Fitbase- PITT', '5:47:00', '9:21:00', '5 Oriole Junction', 'Pennsylvania', 'PA', 23974);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (538349, 'Fitbase- LA', '4:45:00', '11:28:00', '1 Debra Place', 'California', 'CA', 97234);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (654368, 'Fitbase- DAL', '5:44:00', '10:33:00', '5 Erie Court', 'Texas', 'TX', 54313);
+insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (805735, 'Fitbase- MIA', '4:28:00', '7:51:00', '88 Basil Road', 'Florida', 'FL', 97234);
+
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Elden', 'Island', 8598191, 'Male', 760112, 973240, 299272);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Stephi', 'Stolte', 195028, 'Female', 531160, 973240, 299272);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Wang', 'Crosseland', 703868, 'Male', 531160, 973240, 299272);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Raoul', 'Nunnery', 282840, 'Male', 531160, 973240, 299272);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Dianna', 'Esche', 855104, 'Bigender', 270934, 442239, 346064);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Paco', 'Sibbe', 698643, 'Male', 270934, 442239, 346064);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Baird', 'Kringe', 992205, 'Male', 270934, 442239, 346064);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Ashton', 'Forcer', 130698, 'Male', 691445, 654368, 697772);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Katrina', 'Bourget', 209272, 'Female', 691445, 654368, 697772);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Pepito', 'Barrat', 642630, 'Male', 691445, 654368, 697772);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Saul', 'Dimbleby', 239932, 'Male', 861790, 031457, 803303);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Britt', 'Fockes', 282293, 'Female', 861790, 031457, 803303);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Xenia', 'Chisnell', 437262, 'Female', 861790, 031457, 803303);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Elbertine', 'Chisnall', 619257, 'Female', 617784, 031457, 803303);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Caril', 'Kensington', 249702, 'Female', 617784, 546692, 197361);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Ignaz', 'McKew', 979465, 'Male', 617784, 546692, 197361);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Adrien', 'Guys', 819670, 'Male', 596835, 546692, 197361);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Hastings', 'Zealy', 846958, 'Male', 596835, 546692, 197361);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('West', 'Crotty', 523907, 'Male', 596835, 546692, 197361);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Alley', 'Cristoforo', 503701, 'Male', 406457, 538349, 342718);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Pen', 'Shills', 398402, 'Male', 406457, 538349, 342718);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Nowell', 'Dyball', 930461, 'Male', 406457, 538349, 342718);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Homer', 'Saunt', 601222, 'Male', 760112, 805735, 951912);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('See', 'Pietzker', 928461, 'Male', 760112, 805735, 951912);
+insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Mei', 'Shore', 480581, 'Female', 760112, 805735, 951912);
 
 insert into Certs (tid, certification) values (953903, 'NSCA Certified Personal Trainer');
 insert into Certs (tid, certification) values (796214, 'ISSA Certified Fitness Trainer');
@@ -101,14 +352,7 @@ insert into Equipment (eid, difficulty) values (714359, 'medium');
 insert into Equipment (eid, difficulty) values (372230, 'easy');
 insert into Equipment (eid, difficulty) values (683295, 'difficult');
 insert into Equipment (eid, difficulty) values (912819, 'easy');
-#
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (973240, 'Fitbase- NY', '4:36:00', '8:19:00', '3502 8th Parkway', 'Manhattan', 'NY', 31234);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (442239, 'Fitbase- BOS', '5:34:00', '7:44:00', '63980 Little Fleur Court', 'Boston', 'MA', 76100);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (031457, 'Fitbase- ATL', '5:00:00', '7:55:00', '0104 Veith Hill', 'Georgia', 'GA', 78275);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (546692, 'Fitbase- PITT', '5:47:00', '9:21:00', '5 Oriole Junction', 'Pennsylvania', 'PA', 23974);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (538349, 'Fitbase- LA', '4:45:00', '11:28:00', '1 Debra Place', 'California', 'CA', 97234);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (654368, 'Fitbase- DAL', '5:44:00', '10:33:00', '5 Erie Court', 'Texas', 'TX', 54313);
-insert into Gym (gid, name, openTime, closeTime, street, city, state, zip) values (805735, 'Fitbase- MIA', '4:28:00', '7:51:00', '88 Basil Road', 'Florida', 'FL', 97234);
+
 
 insert into Gym_Mem (mid, gid) values (289845, 973240);
 insert into Gym_Mem (mid, gid) values (722892, 973240);
@@ -171,20 +415,6 @@ insert into Manager (first, last, email, phoneNum, mnid) values ('Coretta', 'Mor
 insert into Manager (first, last, email, phoneNum, mnid) values ('Edie', 'Shapero', 'eshaperob@amazon.com', 533592, 531160);
 #
 #
-insert into MarketingConsultant (mcid, first, last) values (951912, 'Alasteir', 'Grieves');
-insert into MarketingConsultant (mcid, first, last) values (342718, 'Aylmar', 'Piner');
-insert into MarketingConsultant (mcid, first, last) values (197361, 'Ambur', 'Escalante');
-insert into MarketingConsultant (mcid, first, last) values (015199, 'Xever', 'Mendus');
-insert into MarketingConsultant (mcid, first, last) values (189856, 'Amitie', 'Thacke');
-insert into MarketingConsultant (mcid, first, last) values (118023, 'Gillian', 'Fattorini');
-insert into MarketingConsultant (mcid, first, last) values (803303, 'Robinia', 'Baverstock');
-insert into MarketingConsultant (mcid, first, last) values (299272, 'Flint', 'Arthur');
-insert into MarketingConsultant (mcid, first, last) values (278414, 'Luci', 'Chapellow');
-insert into MarketingConsultant (mcid, first, last) values (134843, 'Zebulon', 'De Bruijn');
-insert into MarketingConsultant (mcid, first, last) values (504920, 'Carolynn', 'Buckel');
-insert into MarketingConsultant (mcid, first, last) values (697772, 'Devi', 'Owbrick');
-insert into MarketingConsultant (mcid, first, last) values (870729, 'Georgia', 'Whyler');
-insert into MarketingConsultant (mcid, first, last) values (346064, 'Terrye', 'Pickworth');
 
 
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (289845, 'Rachel', 'Evangelinos', 'Female', 2, 83, 951912, 440966, '6726970136', '5025268957', 'revangelinos0@cnet.com', null);
@@ -218,9 +448,6 @@ insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, 
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (347118, 'Myranda', 'Thorndycraft', 'Female', 9, 36, 346064, 540269, '3763359081', '5441181476', 'mthorndycrafts@vistaprint.com', null);
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (796600, 'Bobine', 'Prinett', 'Female', 10, 54, 346064, 540269, '8657416057', '3219278532', 'bprinettt@ameblo.jp', 'bprinettt@arizona.edu');
 
-insert into Membership (msid, type, price, mcid) values (440966, 'Gold', 150.89, 803303);
-insert into Membership (msid, type, price, mcid) values (189048, 'Silver', 125.81, 346064);
-insert into Membership (msid, type, price, mcid) values (540269, 'Bronze', 98.31, 870729);
 
 insert into Orders (totalCost, oid, mcid, mid) values (225.67, 026112, 870729, 796600);
 insert into Orders (totalCost, oid, mcid, mid) values (457.42, 314520, 951912, 347118);
@@ -403,41 +630,3 @@ insert into Train_Equip (tid, eid) values (195028, 372230);
 insert into Train_Equip (tid, eid) values (8598191, 683295);
 insert into Train_Equip (tid, eid) values (8598191, 912819);
 
-insert into Manager (first, last, email, phoneNum, mnid) values ('Ignaz', 'Maharg', 'imaharg0@youtube.com', 213704, 760112);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Kally', 'Lace', 'klace1@ibm.com', 205447, 406457);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Bonita', 'Capstake', 'bcapstake2@51.la', 236573, 596835);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Had', 'Carpe', 'hcarpe3@seattletimes.com', 743740, 617784);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Alair', 'Kennagh', 'akennagh4@tinypic.com', 951553, 861790);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Francene', 'Gawler', 'fgawler5@ucsd.edu', 598409, 691445);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Ulrica', 'Manoch', 'umanoch6@xinhuanet.com', 948545, 270934);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Susanne', 'Espie', 'sespie7@free.fr', 549227, 964729);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Gillian', 'Scain', 'gscain8@msu.edu', 221644, 184063);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Marty', 'Jagiello', 'mjagiello9@tripod.com', 100394, 648372);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Coretta', 'Morl', 'cmorla@virginia.edu', 106519, 246048);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Edie', 'Shapero', 'eshaperob@amazon.com', 533592, 531160);
-
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Elden', 'Island', 8598191, 'Male', 760112, 973240, 299272);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Stephi', 'Stolte', 195028, 'Female', 531160, 973240, 299272);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Wang', 'Crosseland', 703868, 'Male', 531160, 973240, 299272);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Raoul', 'Nunnery', 282840, 'Male', 531160, 973240, 299272);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Dianna', 'Esche', 855104, 'Bigender', 270934, 442239, 346064);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Paco', 'Sibbe', 698643, 'Male', 270934, 442239, 346064);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Baird', 'Kringe', 992205, 'Male', 270934, 442239, 346064);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Ashton', 'Forcer', 130698, 'Male', 691445, 654368, 697772);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Katrina', 'Bourget', 209272, 'Female', 691445, 654368, 697772);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Pepito', 'Barrat', 642630, 'Male', 691445, 654368, 697772);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Saul', 'Dimbleby', 239932, 'Male', 861790, 031457, 803303);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Britt', 'Fockes', 282293, 'Female', 861790, 031457, 803303);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Xenia', 'Chisnell', 437262, 'Female', 861790, 031457, 803303);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Elbertine', 'Chisnall', 619257, 'Female', 617784, 031457, 803303);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Caril', 'Kensington', 249702, 'Female', 617784, 546692, 197361);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Ignaz', 'McKew', 979465, 'Male', 617784, 546692, 197361);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Adrien', 'Guys', 819670, 'Male', 596835, 546692, 197361);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Hastings', 'Zealy', 846958, 'Male', 596835, 546692, 197361);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('West', 'Crotty', 523907, 'Male', 596835, 546692, 197361);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Alley', 'Cristoforo', 503701, 'Male', 406457, 538349, 342718);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Pen', 'Shills', 398402, 'Male', 406457, 538349, 342718);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Nowell', 'Dyball', 930461, 'Male', 406457, 538349, 342718);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Homer', 'Saunt', 601222, 'Male', 760112, 805735, 951912);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('See', 'Pietzker', 928461, 'Male', 760112, 805735, 951912);
-insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Mei', 'Shore', 480581, 'Female', 760112, 805735, 951912);
