@@ -1,187 +1,3 @@
-CREATE DATABASE IF NOT EXISTS FitBase;
-# DROP DATABASE FitBase;
-SHOW DATABASES;
-
-USE FitBase;
-
-CREATE TABLE IF NOT EXISTS Gym
-(
-    gid       int PRIMARY KEY,
-    name      varchar(50) NOT NULL,
-    openTime  time        NOT NULL,
-    closeTime time        NOT NULL,
-    street    varchar(50) NOT NULL,
-    city      varchar(50) NOT NULL,
-    state     varchar(2)  NOT NULL,
-    zip       int         NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS MarketingConsultant
-(
-    mcid  int PRIMARY KEY,
-    first varchar(50) NOT NULL,
-    last  varchar(50) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Membership
-(
-    msid  int PRIMARY KEY,
-    type  varchar(50) NOT NULL,
-    price double      NOT NULL,
-    mcid  int,
-    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
-);
-
-CREATE TABLE IF NOT EXISTS Manager
-(
-    first    varchar(50) NOT NULL,
-    last     varchar(50) NOT NULL,
-    email         varchar(50) NOT NULL,
-    phoneNum      varchar(20) NOT NULL,
-    mnid          int PRIMARY KEY
-);
-
-CREATE TABLE IF NOT EXISTS Member
-(
-    mid        int PRIMARY KEY,
-    first_name      varchar(50) NOT NULL,
-    last_name       varchar(50) NOT NULL,
-    gender     varchar(50) NOT NULL,
-    years      int         NOT NULL NOT NULL,
-    age        int         NOT NULL,
-    mcid       int,
-    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid),
-    msid       int,
-    FOREIGN KEY (msid) REFERENCES Membership (msid),
-    phoneNum_1 varchar(20) NOT NULL,
-    phoneNum_2 varchar(20),
-    email_1    varchar(50) NOT NULL,
-    email_2    varchar(50)
-);
-
-CREATE TABLE IF NOT EXISTS Trainer
-(
-    first  varchar(50) NOT NULL,
-    last   varchar(50) NOT NULL,
-    tid    int PRIMARY KEY,
-    gender varchar(50) NOT NULL,
-    mnid   int,
-    gid    int,
-    mcid   int,
-    FOREIGN KEY (mnid) REFERENCES Manager (mnid),
-    FOREIGN KEY (gid) REFERENCES Gym (gid),
-    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
-);
-
-CREATE TABLE IF NOT EXISTS Specialities
-(
-    tid       int,
-    specialty varchar(50) NOT NULL,
-    FOREIGN KEY (tid) REFERENCES Trainer (tid)
-);
-
-CREATE TABLE IF NOT EXISTS Gym_Mem
-(
-    mid int,
-    gid int NOT NULL,
-    FOREIGN KEY (mid) REFERENCES Member (mid)
-);
-
-CREATE TABLE IF NOT EXISTS Certs
-(
-    tid           int,
-    certification varchar(50) NOT NULL,
-    FOREIGN KEY (tid) REFERENCES Trainer (tid)
-);
-
-CREATE TABLE IF NOT EXISTS Interests
-(
-    mid      int,
-    interest varchar(50),
-    FOREIGN KEY (mid) REFERENCES Member (mid)
-);
-
-CREATE TABLE IF NOT EXISTS Orders
-(
-    totalCost double NOT NULL,
-    oid       int PRIMARY KEY,
-    mcid      int,
-    mid       int,
-    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid),
-    FOREIGN KEY (mid) REFERENCES Member (mid)
-);
-
-CREATE TABLE IF NOT EXISTS Product
-(
-    pid   int PRIMARY KEY,
-    price double      NOT NULL,
-    name  varchar(50) NOT NULL,
-    type  varchar(50) NOT NULL
-);
-
-# DROP TABLE IF EXISTS Equipment;
-CREATE TABLE IF NOT EXISTS Equipment
-(
-    eid        int PRIMARY KEY,
-    difficulty varchar(10)
-);
-
-CREATE TABLE IF NOT EXISTS Prod_Order
-(
-    oid int,
-    pid int,
-    FOREIGN KEY (oid) REFERENCES Orders (oid),
-    FOREIGN KEY (pid) REFERENCES Product (pid)
-);
-
-CREATE TABLE IF NOT EXISTS Class
-(
-    cid        int PRIMARY KEY,
-    activity   varchar(50) NOT NULL,
-    name       varchar(50) NOT NULL,
-    startTime  datetime    NOT NULL,
-    endTime    datetime    NOT NULL,
-    roomNum    int         NOT NULL,
-    totalSeats int         NOT NULL,
-    tid        int,
-    FOREIGN KEY (tid) REFERENCES Trainer (tid),
-    mcid       int,
-    FOREIGN KEY (mcid) REFERENCES MarketingConsultant (mcid)
-);
-
-CREATE TABLE IF NOT EXISTS Class_Mem
-(
-    mid int,
-    cid int,
-    FOREIGN KEY (mid) REFERENCES Member (mid),
-    FOREIGN KEY (cid) REFERENCES Class (cid)
-);
-
-CREATE TABLE IF NOT EXISTS Train_Equip
-(
-    tid int,
-    eid int,
-    FOREIGN KEY (tid) REFERENCES Trainer (tid),
-    FOREIGN KEY (eid) REFERENCES Equipment (eid)
-);
-
-CREATE TABLE IF NOT EXISTS PersonalTraining
-(
-    ptid     int PRIMARY KEY,
-    length   int         NOT NULL,
-    activity varchar(50) NOT NULL,
-    tid      int,
-    FOREIGN KEY (tid) REFERENCES Trainer (tid),
-    mid      int,
-    FOREIGN KEY (mid) REFERENCES Member (mid)
-);
-
-CREATE TABLE IF NOT EXISTS Discount
-(
-    type varchar(50),
-    msid int,
-    FOREIGN KEY (msid) REFERENCES Membership (msid)
-);
 
 insert into Manager (first, last, email, phoneNum, mnid) values ('Ignaz', 'Maharg', 'imaharg0@youtube.com', 213704, 760112);
 insert into Manager (first, last, email, phoneNum, mnid) values ('Kally', 'Lace', 'klace1@ibm.com', 205447, 406457);
@@ -251,62 +67,62 @@ insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Homer',
 insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('See', 'Pietzker', 928461, 'Male', 760112, 805735, 951912);
 insert into Trainer (first, last, tid, gender, mnid, gid, mcid) values ('Mei', 'Shore', 480581, 'Female', 760112, 805735, 951912);
 
-insert into Certs (tid, certification) values (953903, 'NSCA Certified Personal Trainer');
-insert into Certs (tid, certification) values (796214, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (567420, 'NCCPT Certified Personal Trainer');
-insert into Certs (tid, certification) values (839192, 'NASM Certified Personal Trainer');
-insert into Certs (tid, certification) values (836442, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (905086, 'ACSM Certified Personal Trainer');
-insert into Certs (tid, certification) values (069331, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (878185, 'ACE Personal Trainer Certification');
-insert into Certs (tid, certification) values (872432, 'NSCA Certified Personal Trainer');
-insert into Certs (tid, certification) values (548013, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (537593, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (202093, 'AFPA Certified Personal Trainer');
-insert into Certs (tid, certification) values (657921, 'ACSM Certified Personal Trainer');
-insert into Certs (tid, certification) values (500811, 'ISSA Certified Fitness Trainer');
-insert into Certs (tid, certification) values (899050, 'NCCPT Certified Personal Trainer');
-insert into Certs (tid, certification) values (009409, 'NASM Certified Personal Trainer');
-insert into Certs (tid, certification) values (889298, 'NCSF Certified Personal Trainer');
-insert into Certs (tid, certification) values (644028, 'AFPA Certified Personal Trainer');
-insert into Certs (tid, certification) values (804683, 'ACSM Certified Personal Trainer');
-insert into Certs (tid, certification) values (722736, 'NSCA Certified Personal Trainer');
-insert into Certs (tid, certification) values (170915, 'AFPA Certified Personal Trainer');
-insert into Certs (tid, certification) values (558763, 'NCSF Certified Personal Trainer');
-insert into Certs (tid, certification) values (564010, 'NESTA Personal Fitness Trainer Certification');
-insert into Certs (tid, certification) values (906291, 'NESTA Personal Fitness Trainer Certification');
-insert into Certs (tid, certification) values (951002, 'NCSF Certified Personal Trainer');
+insert into Certs (tid, certification) values (480581, 'NSCA Certified Personal Trainer');
+insert into Certs (tid, certification) values (928461, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (601222, 'NCCPT Certified Personal Trainer');
+insert into Certs (tid, certification) values (282293, 'NASM Certified Personal Trainer');
+insert into Certs (tid, certification) values (398402, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (642630, 'ACSM Certified Personal Trainer');
+insert into Certs (tid, certification) values (282293, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (846958, 'ACE Personal Trainer Certification');
+insert into Certs (tid, certification) values (819670, 'NSCA Certified Personal Trainer');
+insert into Certs (tid, certification) values (979465, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (249702, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (619257, 'AFPA Certified Personal Trainer');
+insert into Certs (tid, certification) values (437262, 'ACSM Certified Personal Trainer');
+insert into Certs (tid, certification) values (282293, 'ISSA Certified Fitness Trainer');
+insert into Certs (tid, certification) values (239932, 'NCCPT Certified Personal Trainer');
+insert into Certs (tid, certification) values (642630, 'NASM Certified Personal Trainer');
+insert into Certs (tid, certification) values (209272, 'NCSF Certified Personal Trainer');
+insert into Certs (tid, certification) values (130698, 'AFPA Certified Personal Trainer');
+insert into Certs (tid, certification) values (992205, 'ACSM Certified Personal Trainer');
+insert into Certs (tid, certification) values (698643, 'NSCA Certified Personal Trainer');
+insert into Certs (tid, certification) values (855104, 'AFPA Certified Personal Trainer');
+insert into Certs (tid, certification) values (282840, 'NCSF Certified Personal Trainer');
+insert into Certs (tid, certification) values (703868, 'NESTA Personal Fitness Trainer Certification');
+insert into Certs (tid, certification) values (195028, 'NESTA Personal Fitness Trainer Certification');
+insert into Certs (tid, certification) values (8598191, 'NCSF Certified Personal Trainer');
 
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (867016, 'zumba', 'Glow in the Dark Zumba', '2023-01-12 7:05:00', '2023-01-12 9:25:00', 900, 15, 567420, 514556);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (090630, 'kickboxing', 'Kickboxing', '2023-04-23 3:55:00', '2023-04-23 5:15:00', 26, 35, 722736, 752425);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (317839, 'yoga', 'Yoga with Goats', '2023-10-13 3:25:00', '2023-10-13 3:20:00', 560, 32, 202093, 226192);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (445626, 'yoga', 'Hot Yoga', '2023-11-24 17:15:00', '2023-11-24 18:20:00', 418, 23, 644028, 746911);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (015282, 'weights', 'Get Stronger', '2023-08-11 13:35:00', '2023-08-11 14:25:00', 84, 4, 548013, 432083);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (120599, 'weights', 'Get Stronger Arms', '2023-02-19 15:15:00', '2023-02-19 17:30:00', 742, 8, 657921, 043112);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (094351, 'body', 'Arm Sculpt', '2023-12-01 5:00:00', '2023-12-01 6:55:00', 732, 30, 878185, 605735);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (534438, 'body', 'Butt Sculpt', '2023-01-02 6:00:00', '2023-01-02 8:00:00', 332, 31, 951002, 966656);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (118354, 'zumba', 'Glow in the Dark Zumba', '2023-01-03 4:30:00', '2023-01-03 6:30:00', 699, 20, 905086, 602280);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (856088, 'kickboxing', 'Kickboxing', '2023-02-09 12:30:00', '2023-02-09 13:45:00', 41, 6, 796214, 339032);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (528526, 'yoga', 'Yoga with Goats', '2023-03-13 11:00:00', '2023-03-13 13:30:00', 325, 22, 500811, 245518);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (323399, 'yoga', 'Hot Yoga', '2023-04-17 5:00:00', '2023-04-17 7:00:00', 7, 29, 836442, 117617);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (350150, 'weights', 'Get Stronger', '2023-07-29 9:45:00', '2023-07-29 11:00:00', 96, 6, 889298, 908002);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (022825, 'weights', 'Get Stronger Arms', '2023-10-30 13:45:00', '2023-10-30 14:55:00', 517, 22, 009409, 803994);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (947273, 'body', 'Arm Sculpt', '2023-10-10 7:50:00', '2023-10-10 10:15:00', 268, 16, 804683, 117617);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (125455, 'body', 'Butt Sculpt', '2023-10-11 14:00:00', '2023-10-11 16:00:00', 132, 28, 564010, 966656);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (352149, 'zumba', 'Glow in the Dark Zumba', '2023-05-29 4:00:00', '2023-05-29 6:00:00', 179, 24, 170915, 339032);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (130156, 'kickboxing', 'Kickboxing', '2023-07-30 6:00:00', '2023-07-30 7:00:00', 139, 22, 537593, 803994);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (587013, 'yoga', 'Yoga with Goats', '2023-05-31 12:00:00', '2023-05-31 13:30:00', 373, 28, 953903, 226192);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (895933, 'yoga', 'Hot Yoga', '2023-06-02 6:45:00', '2023-06-02 7:45:00', 988, 15, 899050, 752425);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (994970, 'weights', 'Get Stronger', '2023-07-12 11:00:00', '2023-07-12 12:30:00', 50, 9, 069331, 245518);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (069268, 'weights', 'Get Stronger Arms', '2023-12-12 11:00:00', '2023-12-12 13:00:00', 531, 32, 872432, 908002);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (598163, 'body', 'Arm Sculpt', '2023-10-22 6:10:00', '2023-10-22 7:55:00', 849, 34, 558763, 602280);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (177244, 'body', 'Butt Sculpt', '2023-11-28 9:00:00', '2023-11-28 11:30:00', 186, 30, 839192, 043112);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (105066, 'zumba', 'Glow in the Dark Zumba', '2023-11-13 13:45:00', '2023-11-23 14:00:00', 407, 19, 906291, 605735);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (117815, 'kickboxing', 'Kickboxing', '2023-04-22 5:00:00', '2023-04-22 7:00:00', 724, 32, 567420, 514556);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (803662, 'yoga', 'Yoga with Goats', '2023-04-14 9:45:00', '2023-04-14 10:50:00', 886, 33, 170915, 432083);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (014343, 'yoga', 'Hot Yoga', '2023-11-13 7:40:00', '2023-11-13 8:45:00', 317, 33, 899050, 746911);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (913373, 'weights', 'Get Stronger', '2023-11-10 10:00:00', '2023-11-10 11:30:00', 26, 1, 878185, 803994);
-insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (123396, 'weights', 'Get Stronger Arms', '2023-12-22 16:00:00', '2023-12-22 6:00:00', 433, 4, 836442, 245518);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (867016, 'zumba', 'Glow in the Dark Zumba', '2023-01-12 7:05:00', '2023-01-12 9:25:00', 900, 15, 8598191, 346064);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (090630, 'kickboxing', 'Kickboxing', '2023-04-23 3:55:00', '2023-04-23 5:15:00', 26, 35, 8598191, 346064);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (317839, 'yoga', 'Yoga with Goats', '2023-10-13 3:25:00', '2023-10-13 3:20:00', 560, 32, 8598191, 870729);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (445626, 'yoga', 'Hot Yoga', '2023-11-24 17:15:00', '2023-11-24 18:20:00', 418, 23, 8598191, 870729);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (015282, 'weights', 'Get Stronger', '2023-08-11 13:35:00', '2023-08-11 14:25:00', 84, 4, 8598191, 697772);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (120599, 'weights', 'Get Stronger Arms', '2023-02-19 15:15:00', '2023-02-19 17:30:00', 742, 8, 8598191, 697772);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (094351, 'body', 'Arm Sculpt', '2023-12-01 5:00:00', '2023-12-01 6:55:00', 732, 30, 8598191, 504920);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (534438, 'body', 'Butt Sculpt', '2023-01-02 6:00:00', '2023-01-02 8:00:00', 332, 31, 8598191, 504920);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (118354, 'zumba', 'Glow in the Dark Zumba', '2023-01-03 4:30:00', '2023-01-03 6:30:00', 699, 20, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (856088, 'kickboxing', 'Kickboxing', '2023-02-09 12:30:00', '2023-02-09 13:45:00', 41, 6, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (528526, 'yoga', 'Yoga with Goats', '2023-03-13 11:00:00', '2023-03-13 13:30:00', 325, 22, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (323399, 'yoga', 'Hot Yoga', '2023-04-17 5:00:00', '2023-04-17 7:00:00', 7, 29, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (350150, 'weights', 'Get Stronger', '2023-07-29 9:45:00', '2023-07-29 11:00:00', 96, 6, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (022825, 'weights', 'Get Stronger Arms', '2023-10-30 13:45:00', '2023-10-30 14:55:00', 517, 22, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (947273, 'body', 'Arm Sculpt', '2023-10-10 7:50:00', '2023-10-10 10:15:00', 268, 16, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (125455, 'body', 'Butt Sculpt', '2023-10-11 14:00:00', '2023-10-11 16:00:00', 132, 28, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (352149, 'zumba', 'Glow in the Dark Zumba', '2023-05-29 4:00:00', '2023-05-29 6:00:00', 179, 24, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (130156, 'kickboxing', 'Kickboxing', '2023-07-30 6:00:00', '2023-07-30 7:00:00', 139, 22, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (587013, 'yoga', 'Yoga with Goats', '2023-05-31 12:00:00', '2023-05-31 13:30:00', 373, 28, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (895933, 'yoga', 'Hot Yoga', '2023-06-02 6:45:00', '2023-06-02 7:45:00', 988, 15, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (994970, 'weights', 'Get Stronger', '2023-07-12 11:00:00', '2023-07-12 12:30:00', 50, 9, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (069268, 'weights', 'Get Stronger Arms', '2023-12-12 11:00:00', '2023-12-12 13:00:00', 531, 32, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (598163, 'body', 'Arm Sculpt', '2023-10-22 6:10:00', '2023-10-22 7:55:00', 849, 34, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (177244, 'body', 'Butt Sculpt', '2023-11-28 9:00:00', '2023-11-28 11:30:00', 186, 30, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (105066, 'zumba', 'Glow in the Dark Zumba', '2023-11-13 13:45:00', '2023-11-23 14:00:00', 407, 19, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (117815, 'kickboxing', 'Kickboxing', '2023-04-22 5:00:00', '2023-04-22 7:00:00', 724, 32, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (803662, 'yoga', 'Yoga with Goats', '2023-04-14 9:45:00', '2023-04-14 10:50:00', 886, 33, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (014343, 'yoga', 'Hot Yoga', '2023-11-13 7:40:00', '2023-11-13 8:45:00', 317, 33, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (913373, 'weights', 'Get Stronger', '2023-11-10 10:00:00', '2023-11-10 11:30:00', 26, 1, 8598191, 299272);
+insert into Class (cid, activity, name, startTime, endTime, roomNum, totalSeats, tid, mcid) values (123396, 'weights', 'Get Stronger Arms', '2023-12-22 16:00:00', '2023-12-22 6:00:00', 433, 4, 8598191, 299272 );
 
 insert into Discount (type, msid) values ('Black Friday', 440966);
 insert into Discount (type, msid) values ('Senior Citizen', 440966);
@@ -354,68 +170,6 @@ insert into Equipment (eid, difficulty) values (683295, 'difficult');
 insert into Equipment (eid, difficulty) values (912819, 'easy');
 
 
-insert into Gym_Mem (mid, gid) values (289845, 973240);
-insert into Gym_Mem (mid, gid) values (722892, 973240);
-insert into Gym_Mem (mid, gid) values (212257, 973240);
-insert into Gym_Mem (mid, gid) values (683704, 973240);
-insert into Gym_Mem (mid, gid) values (756852, 442239);
-insert into Gym_Mem (mid, gid) values (804364, 442239);
-insert into Gym_Mem (mid, gid) values (478105, 442239);
-insert into Gym_Mem (mid, gid) values (811363, 442239);
-insert into Gym_Mem (mid, gid) values (120845, 031457);
-insert into Gym_Mem (mid, gid) values (284848, 031457);
-insert into Gym_Mem (mid, gid) values (976144, 031457);
-insert into Gym_Mem (mid, gid) values (963577, 805735);
-insert into Gym_Mem (mid, gid) values (883749, 805735);
-insert into Gym_Mem (mid, gid) values (852823, 805735);
-insert into Gym_Mem (mid, gid) values (375112, 538349);
-insert into Gym_Mem (mid, gid) values (310290, 538349);
-insert into Gym_Mem (mid, gid) values (868509, 538349);
-insert into Gym_Mem (mid, gid) values (248187, 538349);
-insert into Gym_Mem (mid, gid) values (172529, 654368);
-insert into Gym_Mem (mid, gid) values (212225, 654368);
-insert into Gym_Mem (mid, gid) values (624049, 654368);
-insert into Gym_Mem (mid, gid) values (750285, 654368);
-insert into Gym_Mem (mid, gid) values (482580, 654368);
-insert into Gym_Mem (mid, gid) values (001843, 546692);
-insert into Gym_Mem (mid, gid) values (867237, 546692);
-insert into Gym_Mem (mid, gid) values (179281, 546692);
-insert into Gym_Mem (mid, gid) values (266886, 546692);
-insert into Gym_Mem (mid, gid) values (280773, 031457);
-insert into Gym_Mem (mid, gid) values (347118, 654368);
-insert into Gym_Mem (mid, gid) values (280773, 805735);
-
-insert into Interests (mid, interest) values (448906, 'Strength Training');
-insert into Interests (mid, interest) values (709198, 'Kickboxing');
-insert into Interests (mid, interest) values (053103, 'Hot Yoga');
-insert into Interests (mid, interest) values (549127, 'Kickboxing');
-insert into Interests (mid, interest) values (764094, 'Zumba');
-insert into Interests (mid, interest) values (859592, 'Zumba');
-insert into Interests (mid, interest) values (170199, 'Kickboxing');
-insert into Interests (mid, interest) values (738399, 'Zumba');
-insert into Interests (mid, interest) values (545791, 'Dance');
-insert into Interests (mid, interest) values (709077, 'Hot Yoga');
-insert into Interests (mid, interest) values (745156, 'Dance');
-insert into Interests (mid, interest) values (637793, 'Hot Yoga');
-insert into Interests (mid, interest) values (003102, 'Yoga');
-insert into Interests (mid, interest) values (282101, 'Hot Yoga');
-insert into Interests (mid, interest) values (134341, 'Yoga');
-#
-insert into Manager (first, last, email, phoneNum, mnid) values ('Ignaz', 'Maharg', 'imaharg0@youtube.com', 213704, 760112);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Kally', 'Lace', 'klace1@ibm.com', 205447, 406457);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Bonita', 'Capstake', 'bcapstake2@51.la', 236573, 596835);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Had', 'Carpe', 'hcarpe3@seattletimes.com', 743740, 617784);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Alair', 'Kennagh', 'akennagh4@tinypic.com', 951553, 861790);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Francene', 'Gawler', 'fgawler5@ucsd.edu', 598409, 691445);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Ulrica', 'Manoch', 'umanoch6@xinhuanet.com', 948545, 270934);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Susanne', 'Espie', 'sespie7@free.fr', 549227, 964729);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Gillian', 'Scain', 'gscain8@msu.edu', 221644, 184063);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Marty', 'Jagiello', 'mjagiello9@tripod.com', 100394, 648372);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Coretta', 'Morl', 'cmorla@virginia.edu', 106519, 246048);
-insert into Manager (first, last, email, phoneNum, mnid) values ('Edie', 'Shapero', 'eshaperob@amazon.com', 533592, 531160);
-#
-#
-
 
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (289845, 'Rachel', 'Evangelinos', 'Female', 2, 83, 951912, 440966, '6726970136', '5025268957', 'revangelinos0@cnet.com', null);
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (722892, 'Dionysus', 'Sanford', 'Male', 7, 38, 951912, 440966, '5764264659', '6506498117', 'dsanford1@ning.com', null);
@@ -447,6 +201,58 @@ insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, 
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (280773, 'Michail', 'Creech', 'Male', 3, 64, 504920, 189048, '5037399746', '2512017796', 'mcreechr@domainmarket.com', null);
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (347118, 'Myranda', 'Thorndycraft', 'Female', 9, 36, 346064, 540269, '3763359081', '5441181476', 'mthorndycrafts@vistaprint.com', null);
 insert into Member (mid, first_name, last_name, gender, years, age, mcid, msid, phoneNum_1, phoneNum_2, email_1, email_2) values (796600, 'Bobine', 'Prinett', 'Female', 10, 54, 346064, 540269, '8657416057', '3219278532', 'bprinettt@ameblo.jp', 'bprinettt@arizona.edu');
+
+insert into Gym_Mem (mid, gid) values (289845, 973240);
+insert into Gym_Mem (mid, gid) values (722892, 973240);
+insert into Gym_Mem (mid, gid) values (212257, 973240);
+insert into Gym_Mem (mid, gid) values (683704, 973240);
+insert into Gym_Mem (mid, gid) values (756852, 442239);
+insert into Gym_Mem (mid, gid) values (804364, 442239);
+insert into Gym_Mem (mid, gid) values (478105, 442239);
+insert into Gym_Mem (mid, gid) values (811363, 442239);
+insert into Gym_Mem (mid, gid) values (120845, 031457);
+insert into Gym_Mem (mid, gid) values (284848, 031457);
+insert into Gym_Mem (mid, gid) values (976144, 031457);
+insert into Gym_Mem (mid, gid) values (963577, 805735);
+insert into Gym_Mem (mid, gid) values (883749, 805735);
+insert into Gym_Mem (mid, gid) values (852823, 805735);
+insert into Gym_Mem (mid, gid) values (375112, 538349);
+insert into Gym_Mem (mid, gid) values (310290, 538349);
+insert into Gym_Mem (mid, gid) values (868509, 538349);
+insert into Gym_Mem (mid, gid) values (248187, 538349);
+insert into Gym_Mem (mid, gid) values (172529, 654368);
+insert into Gym_Mem (mid, gid) values (212225, 654368);
+insert into Gym_Mem (mid, gid) values (624049, 654368);
+insert into Gym_Mem (mid, gid) values (750285, 654368);
+insert into Gym_Mem (mid, gid) values (482580, 654368);
+insert into Gym_Mem (mid, gid) values (001843, 546692);
+insert into Gym_Mem (mid, gid) values (867237, 546692);
+insert into Gym_Mem (mid, gid) values (179281, 546692);
+insert into Gym_Mem (mid, gid) values (266886, 546692);
+insert into Gym_Mem (mid, gid) values (280773, 031457);
+insert into Gym_Mem (mid, gid) values (347118, 654368);
+insert into Gym_Mem (mid, gid) values (280773, 805735);
+
+insert into Interests (mid, interest) values (289845, 'Strength Training');
+insert into Interests (mid, interest) values (289845, 'Kickboxing');
+insert into Interests (mid, interest) values (289845, 'Hot Yoga');
+insert into Interests (mid, interest) values (289845, 'Kickboxing');
+insert into Interests (mid, interest) values (289845, 'Zumba');
+insert into Interests (mid, interest) values (289845, 'Zumba');
+insert into Interests (mid, interest) values (289845, 'Kickboxing');
+insert into Interests (mid, interest) values (289845, 'Zumba');
+insert into Interests (mid, interest) values (289845, 'Dance');
+insert into Interests (mid, interest) values (289845, 'Hot Yoga');
+insert into Interests (mid, interest) values (289845, 'Dance');
+insert into Interests (mid, interest) values (289845, 'Hot Yoga');
+insert into Interests (mid, interest) values (289845, 'Yoga');
+insert into Interests (mid, interest) values (289845, 'Hot Yoga');
+insert into Interests (mid, interest) values (289845, 'Yoga');
+
+#
+#
+
+
 
 
 insert into Orders (totalCost, oid, mcid, mid) values (225.67, 026112, 870729, 796600);
@@ -480,36 +286,36 @@ insert into Orders (totalCost, oid, mcid, mid) values (323.69, 619107, 870729, 2
 insert into Orders (totalCost, oid, mcid, mid) values (81.22, 734115, 697772, 976144);
 insert into Orders (totalCost, oid, mcid, mid) values (147.94, 888742, 697772, 001843);
 
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('6728617663', 30, 'Zumba', 437262, 347118);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('4240563453', 90, 'Zumba', 437262, 347118);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('6969887944', 90, 'Hot Yoga', 282293, 280773);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3679930615', 60, 'Kickboxing', 282293, 280773);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('1511450495', 30, 'Strength', 239932, 266886);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('8909415606', 60, 'Zumba', 239932, 266886);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('9578850069', 60, 'Strength', 642630, 179281);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3910226817', 30, 'Strength', 642630, 179281);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('9097296773', 60, 'Strength', 642630, 867237);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3250428191', 90, 'Cardio', 209272, 867237);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('6913174381', 30, 'Strength', 209272, 001843);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('5821768969', 30, 'Zumba', 130698, 001843);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('9495414202', 60, 'Zumba', 130698, 482580);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('7010315256', 60, 'Hot Yoga', 992205, 482580);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3847497030', 60, 'Hot Yoga', 992205, 624049);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('2666795330', 90, 'Zumba', 698643, 624049);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('7840398081', 30, 'Hot Yoga', 698643, 750285);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('4310753000', 30, 'Strength', 855104, 750285);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('2387239180', 90, 'Yoga', 855104, 212225);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('2118724349', 60, 'Zumba', 282840, 212225);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3585792049', 30, 'Cardio', 282840, 172529);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('3098901012', 90, 'Strength', 703868, 172529);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('6962309872', 60, 'Hot Yoga', 703868, 248187);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('8667461997', 60, 'Hot Yoga', 703868, 248187);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('1073340252', 60, 'Kickboxing', 195028, 868509);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('2389140076', 60, 'Yoga', 195028, 868509);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('1737368080', 90, 'Hot Yoga', 195028, 310290);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('9791656746', 90, 'Yoga', 8598191, 310290);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('1136169180', 60, 'Yoga', 8598191, 852823);
-insert into PersonalTraining (ptid, length, activity, tid, mid) values ('1957177381', 30, 'Cardio', 8598191, 852823);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (672861, 30, 'Zumba', 437262, 347118);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (424056, 90, 'Zumba', 437262, 347118);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (696988, 90, 'Hot Yoga', 282293, 280773);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (367993, 60, 'Kickboxing', 282293, 280773);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (151145, 30, 'Strength', 239932, 266886);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (890941, 60, 'Zumba', 239932, 266886);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (957885, 60, 'Strength', 642630, 179281);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (391022, 30, 'Strength', 642630, 179281);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (909729, 60, 'Strength', 642630, 867237);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (325042, 90, 'Cardio', 209272, 867237);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (691317, 30, 'Strength', 209272, 001843);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (582176, 30, 'Zumba', 130698, 001843);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (949541, 60, 'Zumba', 130698, 482580);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (701031, 60, 'Hot Yoga', 992205, 482580);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (384749, 60, 'Hot Yoga', 992205, 624049);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (266679, 90, 'Zumba', 698643, 624049);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (784039, 30, 'Hot Yoga', 698643, 750285);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (431075, 30, 'Strength', 855104, 750285);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (238723, 90, 'Yoga', 855104, 212225);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (211872, 60, 'Zumba', 282840, 212225);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (358579, 30, 'Cardio', 282840, 172529);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (309890, 90, 'Strength', 703868, 172529);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (696230, 60, 'Hot Yoga', 703868, 248187);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (866746, 60, 'Hot Yoga', 703868, 248187);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (107334, 60, 'Kickboxing', 195028, 868509);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (238914, 60, 'Yoga', 195028, 868509);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (173736, 90, 'Hot Yoga', 195028, 310290);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (979165, 90, 'Yoga', 8598191, 310290);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (113616, 60, 'Yoga', 8598191, 852823);
+insert into PersonalTraining (ptid, length, activity, tid, mid) values (195717, 30, 'Cardio', 8598191, 852823);
 
 insert into Product (pid, price, name, type) values (958739, 22.99, 'Top', 'Apparel');
 insert into Product (pid, price, name, type) values (687423, 17.25, 'Short', 'Apparel');
@@ -542,62 +348,62 @@ insert into Product (pid, price, name, type) values (072905, 28.99, 'Fitbase sho
 insert into Product (pid, price, name, type) values (908630, 13.45, 'Goggles', 'Accessory');
 insert into Product (pid, price, name, type) values (209379, 17.89, 'Armband', 'Accessory');
 
-insert into Prod_Order (oid, pid) values (389370, 209379);
-insert into Prod_Order (oid, pid) values (152867, 209379);
-insert into Prod_Order (oid, pid) values (564579, 908630);
-insert into Prod_Order (oid, pid) values (473272, 908630);
-insert into Prod_Order (oid, pid) values (819350, 072905);
-insert into Prod_Order (oid, pid) values (671892, 072905);
-insert into Prod_Order (oid, pid) values (881361, 645075);
-insert into Prod_Order (oid, pid) values (852318, 645075);
-insert into Prod_Order (oid, pid) values (542301, 726997);
-insert into Prod_Order (oid, pid) values (482555, 726997);
-insert into Prod_Order (oid, pid) values (776703, 954237);
-insert into Prod_Order (oid, pid) values (633775, 954237);
-insert into Prod_Order (oid, pid) values (114964, 890139);
-insert into Prod_Order (oid, pid) values (839532, 890139);
-insert into Prod_Order (oid, pid) values (057725, 560422);
-insert into Prod_Order (oid, pid) values (864583, 560422);
-insert into Prod_Order (oid, pid) values (922971, 748763);
-insert into Prod_Order (oid, pid) values (723770, 748763);
-insert into Prod_Order (oid, pid) values (200140, 958739);
-insert into Prod_Order (oid, pid) values (291545, 958739);
-insert into Prod_Order (oid, pid) values (809628, 687423);
-insert into Prod_Order (oid, pid) values (349612, 687423);
-insert into Prod_Order (oid, pid) values (882492, 687423);
-insert into Prod_Order (oid, pid) values (861233, 687423);
-insert into Prod_Order (oid, pid) values (576288, 547293);
-insert into Prod_Order (oid, pid) values (769776, 547293);
-insert into Prod_Order (oid, pid) values (028356, 103057);
-insert into Prod_Order (oid, pid) values (343366, 103057);
-insert into Prod_Order (oid, pid) values (884568, 311763);
-insert into Prod_Order (oid, pid) values (606898, 311763);
+insert into Prod_Order (oid, pid) values (026112, 209379);
+insert into Prod_Order (oid, pid) values (026112, 209379);
+insert into Prod_Order (oid, pid) values (026112, 908630);
+insert into Prod_Order (oid, pid) values (026112, 908630);
+insert into Prod_Order (oid, pid) values (026112, 072905);
+insert into Prod_Order (oid, pid) values (026112, 072905);
+insert into Prod_Order (oid, pid) values (026112, 645075);
+insert into Prod_Order (oid, pid) values (026112, 645075);
+insert into Prod_Order (oid, pid) values (026112, 726997);
+insert into Prod_Order (oid, pid) values (026112, 726997);
+insert into Prod_Order (oid, pid) values (026112, 954237);
+insert into Prod_Order (oid, pid) values (026112, 954237);
+insert into Prod_Order (oid, pid) values (026112, 890139);
+insert into Prod_Order (oid, pid) values (026112, 890139);
+insert into Prod_Order (oid, pid) values (026112, 560422);
+insert into Prod_Order (oid, pid) values (026112, 560422);
+insert into Prod_Order (oid, pid) values (026112, 748763);
+insert into Prod_Order (oid, pid) values (026112, 748763);
+insert into Prod_Order (oid, pid) values (026112, 958739);
+insert into Prod_Order (oid, pid) values (026112, 958739);
+insert into Prod_Order (oid, pid) values (026112, 687423);
+insert into Prod_Order (oid, pid) values (026112, 687423);
+insert into Prod_Order (oid, pid) values (026112, 687423);
+insert into Prod_Order (oid, pid) values (026112, 687423);
+insert into Prod_Order (oid, pid) values (026112, 547293);
+insert into Prod_Order (oid, pid) values (026112, 547293);
+insert into Prod_Order (oid, pid) values (026112, 103057);
+insert into Prod_Order (oid, pid) values (026112, 103057);
+insert into Prod_Order (oid, pid) values (026112, 311763);
+insert into Prod_Order (oid, pid) values (026112, 311763);
 
-insert into Specialities (tid, specialty) values (7962149884, 'dance');
-insert into Specialities (tid, specialty) values (7227363023, 'strength');
-insert into Specialities (tid, specialty) values (5008112171, 'legs');
-insert into Specialities (tid, specialty) values (9062916449, 'arms');
-insert into Specialities (tid, specialty) values (9050868649, 'arms');
-insert into Specialities (tid, specialty) values (8724320102, 'cardio');
-insert into Specialities (tid, specialty) values (5375933152, 'dance');
-insert into Specialities (tid, specialty) values (1709159677, 'dance');
-insert into Specialities (tid, specialty) values (5674205841, 'arms');
-insert into Specialities (tid, specialty) values (8781853181, 'pilates');
-insert into Specialities (tid, specialty) values (5480130242, 'dance');
-insert into Specialities (tid, specialty) values (8046830984, 'strength');
-insert into Specialities (tid, specialty) values (2020930889, 'kickboxing');
-insert into Specialities (tid, specialty) values (8892985760, 'strength');
-insert into Specialities (tid, specialty) values (8391925889, 'dance');
-insert into Specialities (tid, specialty) values (6440280430, 'abs');
-insert into Specialities (tid, specialty) values (9510020133, 'pilates');
-insert into Specialities (tid, specialty) values (0094093474, 'strength');
-insert into Specialities (tid, specialty) values (0693313161, 'endurance');
-insert into Specialities (tid, specialty) values (5587631591, 'arms');
-insert into Specialities (tid, specialty) values (8990502233, 'pilates');
-insert into Specialities (tid, specialty) values (8364424165, 'pilates');
-insert into Specialities (tid, specialty) values (9539032083, 'strength');
-insert into Specialities (tid, specialty) values (5640107472, 'endurance');
-insert into Specialities (tid, specialty) values (6579218010, 'cardio');
+insert into Specialities (tid, specialty) values (480581, 'dance');
+insert into Specialities (tid, specialty) values (480581, 'strength');
+insert into Specialities (tid, specialty) values (480581, 'legs');
+insert into Specialities (tid, specialty) values (480581, 'arms');
+insert into Specialities (tid, specialty) values (480581, 'arms');
+insert into Specialities (tid, specialty) values (480581, 'cardio');
+insert into Specialities (tid, specialty) values (480581, 'dance');
+insert into Specialities (tid, specialty) values (480581, 'dance');
+insert into Specialities (tid, specialty) values (480581, 'arms');
+insert into Specialities (tid, specialty) values (480581, 'pilates');
+insert into Specialities (tid, specialty) values (480581, 'dance');
+insert into Specialities (tid, specialty) values (480581, 'strength');
+insert into Specialities (tid, specialty) values (480581, 'kickboxing');
+insert into Specialities (tid, specialty) values (480581, 'strength');
+insert into Specialities (tid, specialty) values (480581, 'dance');
+insert into Specialities (tid, specialty) values (480581, 'abs');
+insert into Specialities (tid, specialty) values (480581, 'pilates');
+insert into Specialities (tid, specialty) values (480581, 'strength');
+insert into Specialities (tid, specialty) values (480581, 'endurance');
+insert into Specialities (tid, specialty) values (480581, 'arms');
+insert into Specialities (tid, specialty) values (480581, 'pilates');
+insert into Specialities (tid, specialty) values (480581, 'pilates');
+insert into Specialities (tid, specialty) values (480581, 'strength');
+insert into Specialities (tid, specialty) values (480581, 'endurance');
+insert into Specialities (tid, specialty) values (480581, 'cardio');
 
 insert into Train_Equip (tid, eid) values (523907, 033901);
 insert into Train_Equip (tid, eid) values (523907, 076815);
