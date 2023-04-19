@@ -1,5 +1,8 @@
 CREATE DATABASE IF NOT EXISTS FitBase;
 
+grant all privileges on FitBase.* to 'webapp'@'%';
+flush privileges;
+
 SHOW DATABASES;
 
 USE FitBase;
