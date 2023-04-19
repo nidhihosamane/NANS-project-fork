@@ -7,7 +7,7 @@ classes = Blueprint('classes', __name__)
 
 
 # Get all the products from the database
-@classes.route('/classnames', methods=['GET'])
+@classes.route('/classNames', methods=['GET'])
 def get_classes():
     # get a cursor object from the database
     
