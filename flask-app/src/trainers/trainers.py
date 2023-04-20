@@ -206,3 +206,23 @@ def update_specialty():
    db.get_db().commit()
   
    return 'Specialty Updated!'
+
+
+@trainers.route('/postTrainer', methods=['POST'])
+def post_trainer():
+    the_data = request.json
+    current_app.logger.info(the_data)
+    
+    #extracting variable
+    specialty = the_data['specialty']
+
+    #constructing the query
+    query = 'INSERT INTO Trainer (specialty, oid, mcid, mid) VALUES ("'
+    query += str(specialty) + '", "'
+    
+    current_app.logger.info(query)
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Specialty updated!'
