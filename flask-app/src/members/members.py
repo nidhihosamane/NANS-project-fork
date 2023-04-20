@@ -4,30 +4,47 @@ from src import db
 
 members = Blueprint('members', __name__)
 
-@members.route('/postOrder', methods=['POST'])
-def post_order():
+@members.route('/postMember', methods=['POST'])
+def new_member():
     the_data = request.json
     current_app.logger.info(the_data)
     
     #extracting variable
-    total_cost = the_data['totalCost']
-    oid = the_data['oid']
-    mcid = the_data['mcid']
     mid = the_data['mid']
+    first_name = the_data['first_name']
+    last_name = the_data['last_name']
+    gender = the_data['gender']
+    years = the_data['years']
+    age = the_data['age']
+    mcid = the_data['mcid']
+    msid = the_data['msid']
+    phoneNum_1 = the_data['phoneNum_1']
+    phoneNum_2 = the_data['phoneNum_2']
+    email_1 = the_data['email_1']
+    email_2 = the_data['email_2']
 
-    #constructing the query
-    query = 'INSERT INTO Orders (totalCost, oid, mcid, mid) VALUES ("'
-    query += str(total_cost) + '", "'
-    query += str(oid) + '", "'
+    query = 'INSERT into Member (mid, first_name, last_name, gender, years, age,\
+          mcid, msid, phoneNum_1, phoneNum_2, email_1,email_2) VALUES ("'
+    query += str(mid) + '", "'
+    query += str(first_name) + '", "'
+    query += str(last_name) + '", "'
+    query += str(gender) + '", "'
+    query += str(years) + '", "'
+    query += str(age) + '", "'
     query += str(mcid) + '", "'
-    query += str(mid) + '")'   
+    query += str(msid) + '", "'
+    query += str(phoneNum_1) + '", "'
+    query += str(phoneNum_2) + '", "'
+    query += str(email_1) + '", "'
+    query += str(email_2) + '")'   
     
     current_app.logger.info(query)
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    return 'Order created!'
+    return 'Member created!'
+
 
 @members.route('/orders', methods=['GET'])
 def get_orders():

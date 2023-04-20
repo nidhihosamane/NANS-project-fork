@@ -72,7 +72,7 @@ CREATE TABLE
     msid       int,
     FOREIGN KEY
         (msid) REFERENCES Membership
-        (msid),
+        (msid) ON UPDATE CASCADE,
     phoneNum_1 varchar(20) NOT NULL,
     phoneNum_2 varchar(20),
     email_1    varchar(50) NOT NULL,
@@ -254,5 +254,5 @@ CREATE TABLE
     msid int,
     FOREIGN KEY
         (msid) REFERENCES Membership
-        (msid)
+        (msid) ON UPDATE CASCADE
 );
