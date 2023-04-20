@@ -29,6 +29,35 @@ def post_order():
     db.get_db().commit()
     return 'Order created!'
 
+@members.route('/orders', methods=['GET'])
+def get_orders():
+    # get a cursor object from the database
+    
+    query = '''
+        SELECT oid, totalCost, mid
+        FROM Orders
+    '''
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
 
 # Get all the classes from the database
 @members.route('/classNames', methods=['GET'])
@@ -70,8 +99,7 @@ def update_type():
     msid = the_data['msid']
     type = the_data['type']
 
-    query = "UPDATE Membership SET type = '{}' WHERE msid = {}".format(type, msid)
-
+    query = "UPDATE Member SET msid = '{}' WHERE msid = {}".format(msid, msid)
 
     current_app.logger.info(query)
     cursor = db.get_db().cursor()
@@ -79,7 +107,6 @@ def update_type():
     db.get_db().commit()
     
     return 'Membership Updated!'
-
 
 
 @members.route('/membershipPrices', methods=['GET'])
