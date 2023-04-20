@@ -79,12 +79,12 @@ def get_seats():
 
 
 # Get all the different trainers from the database
-@trainers.route('/interest', methods=['GET'])
-def get_interest():
+@trainers.route('/contact', methods=['GET'])
+def get_contact():
    # get a cursor object from the database
   
    query = '''
-       SELECT first, last, interest
+       SELECT first_name, last_name, phoneNum_1, email_1
        FROM Member
    '''
    # use cursor to query the database for a list of products
@@ -156,7 +156,7 @@ def get_classinfo():
    # get a cursor object from the database
   
    query = '''
-       SELECT name, startTime, endTiime, roomNum
+       SELECT name, startTime, endTime, roomNum
        FROM Class
    '''
    # use cursor to query the database for a list of products
