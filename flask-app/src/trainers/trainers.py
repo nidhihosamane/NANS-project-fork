@@ -84,8 +84,9 @@ def get_interest():
    # get a cursor object from the database
   
    query = '''
-       SELECT first, last, interest
-       FROM Member
+       SELECT first_name, last_name, interest 
+       FROM Interests 
+       JOIN Member M ON M.mid = Interests.mid
    '''
    # use cursor to query the database for a list of products
    cursor = db.get_db().cursor()
@@ -156,7 +157,7 @@ def get_classinfo():
    # get a cursor object from the database
   
    query = '''
-       SELECT name, startTime, endTiime, roomNum
+       SELECT name, startTime, endTime, roomNum
        FROM Class
    '''
    # use cursor to query the database for a list of products

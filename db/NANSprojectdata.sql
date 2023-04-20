@@ -1,3 +1,5 @@
+use FitBase;
+
 insert into Manager (first, last, email, phoneNum, mnid)
 values ('Ignaz', 'Maharg', 'imaharg0@youtube.com', 213704, 760112);
 insert into Manager (first, last, email, phoneNum, mnid)

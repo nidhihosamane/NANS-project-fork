@@ -118,7 +118,7 @@ CREATE TABLE
     gid int NOT NULL,
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid)
+        (mid) ON DELETE CASCADE
 );
 
 CREATE TABLE
@@ -138,7 +138,7 @@ CREATE TABLE
     interest varchar(50),
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid)
+        (mid) ON DELETE CASCADE
 );
 
 CREATE TABLE
@@ -153,7 +153,7 @@ CREATE TABLE
         (mcid),
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid)
+        (mid) ON DELETE CASCADE
 );
 
 CREATE TABLE
@@ -212,7 +212,7 @@ CREATE TABLE
     cid int,
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid),
+        (mid) ON DELETE CASCADE,
     FOREIGN KEY
         (cid) REFERENCES Class
         (cid)
@@ -244,7 +244,7 @@ CREATE TABLE
     mid      int,
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid)
+        (mid) ON DELETE CASCADE
 );
 
 CREATE TABLE
