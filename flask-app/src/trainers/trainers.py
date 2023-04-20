@@ -207,47 +207,30 @@ def update_last():
   
    return 'Last Name Updated!'
 
-# Adds a new trainer to the database (themselves)
-# @trainer.route('/postTrainer', methods=['POST'])
-# def new_member():
-#     the_data = request.json
-#     current_app.logger.info(the_data)
+#Adds a new trainer to the database (themselves)
+@trainers.route('/postTrainer', methods=['POST'])
+def new_trainer():
+    the_data = request.json
+    current_app.logger.info(the_data)
     
-#     #extracting variable
-#     mid = the_data['mid']
-#     first_name = the_data['first_name']
-#     last_name = the_data['last_name']
-#     gender = the_data['gender']
-#     years = the_data['years']
-#     age = the_data['age']
-#     mcid = the_data['mcid']
-#     msid = the_data['msid']
-#     phoneNum_1 = the_data['phoneNum_1']
-#     phoneNum_2 = the_data['phoneNum_2']
-#     email_1 = the_data['email_1']
-#     email_2 = the_data['email_2']
+    #extracting variable
+    first = the_data['first']
+    last = the_data['last']
+    tid = the_data['tid']
+    gender = the_data['gender']
 
-#     query = 'INSERT into Member (mid, first_name, last_name, gender, years, age,\
-#           mcid, msid, phoneNum_1, phoneNum_2, email_1,email_2) VALUES ("'
-#     query += str(mid) + '", "'
-#     query += str(first_name) + '", "'
-#     query += str(last_name) + '", "'
-#     query += str(gender) + '", "'
-#     query += str(years) + '", "'
-#     query += str(age) + '", "'
-#     query += str(mcid) + '", "'
-#     query += str(msid) + '", "'
-#     query += str(phoneNum_1) + '", "'
-#     query += str(phoneNum_2) + '", "'
-#     query += str(email_1) + '", "'
-#     query += str(email_2) + '")'   
+    query = 'INSERT into Trainer (first, last, tid, gender) VALUES ("'
+    query += str(first) + '", "'
+    query += str(last) + '", "'
+    query += str(tid) + '", "'
+    query += str(gender) + '")'   
     
-#     current_app.logger.info(query)
+    current_app.logger.info(query)
     
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     db.get_db().commit()
-#     return 'Member created!'
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    return 'Trainer created!'
 
 # Deletes a certification of a trainer
 @trainers.route('/deleteCertification', methods=['DELETE'])

@@ -579,5 +579,24 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "c38c11b0-9b44-4536-8c7e-70dbe1f8a7a7",
+    "colId": "7068de1b-0f17-4ae0-b607-ada219ff4778",
+    "containerId": "",
+    "name": "postTrainer",
+    "url": "localhost:8001/t/postTrainer",
+    "method": "POST",
+    "sortNum": 90000,
+    "created": "2023-04-20T19:43:35.336Z",
+    "modified": "2023-04-20T19:45:55.337Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first\":\"Nidhi\",\n  \"last\":\"Hosomane\",\n\t\"tid\":\"712343\",\n\t\"gender\":\"Female\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
