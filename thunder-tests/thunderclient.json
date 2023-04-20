@@ -522,5 +522,43 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "29a1eee5-b9f1-4d6f-8845-e4d9ef8467c7",
+    "colId": "23f98ab5-c98c-415c-8490-737eca80d6dd",
+    "containerId": "",
+    "name": "deleteAccount9",
+    "url": "localhost:8001/m/deleteAccount",
+    "method": "DELETE",
+    "sortNum": 145000,
+    "created": "2023-04-20T18:29:36.457Z",
+    "modified": "2023-04-20T18:30:02.212Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"mid\":\"2341\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "1967f6df-b511-4567-8c75-d65caa2265db",
+    "colId": "23f98ab5-c98c-415c-8490-737eca80d6dd",
+    "containerId": "",
+    "name": "updateType9",
+    "url": "localhost:8001/m/updateType",
+    "method": "PUT",
+    "sortNum": 250000,
+    "created": "2023-04-20T18:30:27.669Z",
+    "modified": "2023-04-20T18:30:44.761Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"mid\": \"213422\",\n  \"msid\": \"540269\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
