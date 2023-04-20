@@ -71,12 +71,12 @@ def get_seats():
 # Get all the different trainers from the database
 @trainers.route('/interest', methods=['GET'])
 def get_interest():
-    # get a cursor object from the database
+   # get a cursor object from the database
   
-    query = '''
-        SELECT first, last, interest
-        FROM Member
-    '''
+   query = '''
+       SELECT first, last, interest
+       FROM Member
+   '''
     # use cursor to query the database for a list of products
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -98,17 +98,47 @@ def get_interest():
 
     return jsonify(json_data)
 
+
+# Get all the different trainers from the database
+@trainers.route('/managerinfo', methods=['GET'])
+def get_information():
+    # get a cursor object from the database
+
+    query = '''
+       SELECT first, last, email, phoneNum
+       FROM Manager
+   '''
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
 
 
 # Get all the different trainers from the database
 @trainers.route('/classinfo', methods=['GET'])
 def get_classinfo():
-    # get a cursor object from the database
+   # get a cursor object from the database
   
-    query = '''
-        SELECT name, startTime, endTiime, roomNum
-        FROM Class
-    '''
+   query = '''
+       SELECT name, startTime, endTiime, roomNum
+       FROM Class
+   '''
     # use cursor to query the database for a list of products
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -129,39 +159,6 @@ def get_classinfo():
         json_data.append(dict(zip(column_headers, row)))
 
     return jsonify(json_data)
-
-
-
-# Get all the different trainers from the database
-@trainers.route('/classinfo', methods=['GET'])
-def get_classinfo():
-    # get a cursor object from the database
-  
-    query = '''
-        SELECT name, startTime, endTiime, roomNum
-        FROM Class
-    '''
-    # use cursor to query the database for a list of products
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    # grab the column headers from the returned data
-    column_headers = [x[0] for x in cursor.description]
-
-    # create an empty dictionary object to use in
-    # putting column headers together with data
-    json_data = []
-
-    # fetch all the data from the cursor
-    theData = cursor.fetchall()
-
-    # for each of the rows, zip the data elements together with
-    # the column headers.
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-
-    return jsonify(json_data)
-
 
 
 @trainers.route('/updateSpecialty', methods=['PUT'])
