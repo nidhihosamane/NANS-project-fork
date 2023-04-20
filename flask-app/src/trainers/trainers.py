@@ -188,16 +188,16 @@ def get_classinfo():
 
 
 
-@trainers.route('/updateSpecialty', methods=['PUT'])
-def update_specialty():
+@trainers.route('/updateLast', methods=['PUT'])
+def update_last():
    the_data = request.json
    current_app.logger.info(the_data)
   
    tid = the_data['tid']
-   specialty = the_data['specialty']
+   last = the_data['last']
 
 
-   query = "UPDATE Trainer SET specialty = '{}' WHERE tid = {}".format(type, tid)
+   query = "UPDATE Trainer SET last = '{}' WHERE tid = {}".format(last, tid)
 
 
    current_app.logger.info(query)
@@ -205,24 +205,60 @@ def update_specialty():
    cursor.execute(query)
    db.get_db().commit()
   
-   return 'Specialty Updated!'
+   return 'Last Name Updated!'
 
 
-@trainers.route('/postTrainer', methods=['POST'])
-def post_trainer():
+# @trainer.route('/postTrainer', methods=['POST'])
+# def new_member():
+#     the_data = request.json
+#     current_app.logger.info(the_data)
+    
+#     #extracting variable
+#     mid = the_data['mid']
+#     first_name = the_data['first_name']
+#     last_name = the_data['last_name']
+#     gender = the_data['gender']
+#     years = the_data['years']
+#     age = the_data['age']
+#     mcid = the_data['mcid']
+#     msid = the_data['msid']
+#     phoneNum_1 = the_data['phoneNum_1']
+#     phoneNum_2 = the_data['phoneNum_2']
+#     email_1 = the_data['email_1']
+#     email_2 = the_data['email_2']
+
+#     query = 'INSERT into Member (mid, first_name, last_name, gender, years, age,\
+#           mcid, msid, phoneNum_1, phoneNum_2, email_1,email_2) VALUES ("'
+#     query += str(mid) + '", "'
+#     query += str(first_name) + '", "'
+#     query += str(last_name) + '", "'
+#     query += str(gender) + '", "'
+#     query += str(years) + '", "'
+#     query += str(age) + '", "'
+#     query += str(mcid) + '", "'
+#     query += str(msid) + '", "'
+#     query += str(phoneNum_1) + '", "'
+#     query += str(phoneNum_2) + '", "'
+#     query += str(email_1) + '", "'
+#     query += str(email_2) + '")'   
+    
+#     current_app.logger.info(query)
+    
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     db.get_db().commit()
+#     return 'Member created!'
+
+@trainers.route('/deleteCertification', methods=['DELETE'])
+def delete_certification():
     the_data = request.json
     current_app.logger.info(the_data)
     
-    #extracting variable
-    specialty = the_data['specialty']
-
-    #constructing the query
-    query = 'INSERT INTO Trainer (specialty, oid, mcid, mid) VALUES ("'
-    query += str(specialty) + '", "'
+    tid = the_data['tid']
+    query = 'DELETE FROM Certs WHERE tid = '  + str(tid)
     
     current_app.logger.info(query)
-    
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    return 'Specialty updated!'
+    return 'Trainer certification deleted!'
