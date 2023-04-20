@@ -78,7 +78,7 @@ def get_seats():
    return jsonify(json_data)
 
 
-# Get all the different trainers from the database
+# Get all the different members and their contact info from the database
 @trainers.route('/contact', methods=['GET'])
 def get_contact():
    # get a cursor object from the database
@@ -114,7 +114,7 @@ def get_contact():
    return jsonify(json_data)
 
 
-# Get all the different trainers from the database
+# Get all the managers from the database
 @trainers.route('/managerinfo', methods=['GET'])
 def get_information():
    # get a cursor object from the database
@@ -150,7 +150,7 @@ def get_information():
    return jsonify(json_data)
 
 
-# Get all the different trainers from the database
+# Get all the different class information from the database
 @trainers.route('/classinfo', methods=['GET'])
 def get_classinfo():
    # get a cursor object from the database
@@ -187,7 +187,7 @@ def get_classinfo():
 
 
 
-
+# Update the last name of a trainer in the database (in case they get married/change their name!)
 @trainers.route('/updateLast', methods=['PUT'])
 def update_last():
    the_data = request.json
@@ -207,7 +207,7 @@ def update_last():
   
    return 'Last Name Updated!'
 
-
+# Adds a new trainer to the database (themselves)
 # @trainer.route('/postTrainer', methods=['POST'])
 # def new_member():
 #     the_data = request.json
@@ -249,6 +249,7 @@ def update_last():
 #     db.get_db().commit()
 #     return 'Member created!'
 
+# Deletes a certification of a trainer
 @trainers.route('/deleteCertification', methods=['DELETE'])
 def delete_certification():
     the_data = request.json
