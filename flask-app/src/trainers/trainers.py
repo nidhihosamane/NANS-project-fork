@@ -71,9 +71,9 @@ def get_seats():
 # Get all the different trainers from the database
 @trainers.route('/interest', methods=['GET'])
 def get_interest():
-    # get a cursor object from the database
-
-    query = '''
+   # get a cursor object from the database
+  
+   query = '''
        SELECT first, last, interest
        FROM Member
    '''
@@ -133,9 +133,9 @@ def get_information():
 # Get all the different trainers from the database
 @trainers.route('/classinfo', methods=['GET'])
 def get_classinfo():
-    # get a cursor object from the database
-
-    query = '''
+   # get a cursor object from the database
+  
+   query = '''
        SELECT name, startTime, endTiime, roomNum
        FROM Class
    '''
