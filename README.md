@@ -22,7 +22,7 @@ Our product, FitBase, aims to organize the system of a newly-opened private gym,
 
 Technologies we used: 
 
-Technologies we used include DataGrip, Visual Studio Code, AppSmith and Docker. DataGrip was used to create the basis of the database. It hosted entites with corresponding attributes usable by 3 user personas, a trainer, marketing consultant, and gym member. Entities include the personas themselves, membership, products, orders, gyms, and more. These entities also included attributes that are appropriate for the use by and visualization for any of the 3 personas. Also, within DataGrip, we created sample data for the database in order to mock an actual database and showcase the database's usage. Visual Studio Code was used to implement the Python code to showcase the possible usage for 2 of our user personas, the trainer and gym member. The ThunderClient extension was used to test the routes of these usages. For example, usages for each user persona include:
+Technologies we used include DataGrip, Visual Studio Code, AppSmith and Docker. DataGrip was used to create the basis of the database. It hosted entites with corresponding attributes usable by 3 user personas, a trainer, marketing consultant, and gym member. Entities include the personas themselves, membership, products, orders, gyms, and more. These entities also included attributes that are appropriate for the use by and visualization for any of the 3 personas. Also, within DataGrip, we created sample data for the database in order to mock an actual database and showcase the database's usage. Visual Studio Code was used to implement the Python code to showcase the possible usage for 2 of our user personas, the trainer and gym member by bulding out the routes needed for our UI. The ThunderClient extension was used to test the routes of these usages. For example, usages for each user persona include:
 
 Member - 
 (1) /postMember: add a new member into the database (themselves)
@@ -44,12 +44,9 @@ Trainer -
 (7) /postTrainer: add a new trainer to the database (themselves)
 (8) /deleteCertification: delete a trainer to the certification
 
-Challenges:
+AppSmith was used to develop the UI of our database and showcase the routes. Overall, Docker was used to ensure that the database within VSCode was working and running. 
 
-We faced a couple of challenges when creating FitBase. 
 
-Forsight: 
-Some features we hope to implement into Fitbase include .
 
 
 
