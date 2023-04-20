@@ -4,6 +4,7 @@ from src import db
 
 members = Blueprint('members', __name__)
 
+# Adds a new member into the database (themselves)
 @members.route('/postMember', methods=['POST'])
 def new_member():
     the_data = request.json
@@ -42,6 +43,7 @@ def new_member():
     return 'Member created!'
 
 
+# Get all the orders made
 @members.route('/orders', methods=['GET'])
 def get_orders():
     # get a cursor object from the database
@@ -72,7 +74,7 @@ def get_orders():
     return jsonify(json_data)
 
 
-# Get all the classes from the database
+# Get all the classes and their times from the database
 @members.route('/classNames', methods=['GET'])
 def get_classes():
     # get a cursor object from the database
@@ -103,7 +105,7 @@ def get_classes():
     return jsonify(json_data)
 
 
-
+# Update the membership
 @members.route('/updateType', methods=['PUT'])
 def update_type():
     the_data = request.json
@@ -121,7 +123,7 @@ def update_type():
     
     return 'Membership Updated!'
 
-
+# Get the costs of all the memberships available
 @members.route('/membershipPrices', methods=['GET'])
 def get_membership_prices():
     # get a cursor object from the database
@@ -153,7 +155,7 @@ def get_membership_prices():
     return jsonify(json_data)
 
 
-
+# Get the names of the trainers 
 @members.route('/trainerNames', methods=['GET'])
 def get_trainers():
     # get a cursor object from the database
@@ -184,7 +186,7 @@ def get_trainers():
 
     return jsonify(json_data)
 
-
+# Get information about personal training sessions
 @members.route('/getPT', methods=['GET'])
 def get_personal_training():
     # get a cursor object from the database
@@ -216,7 +218,7 @@ def get_personal_training():
     return jsonify(json_data)
 
 
-
+# Deletes own member account
 @members.route('/deleteAccount', methods=['DELETE'])
 def delete_account():
     the_data = request.json
