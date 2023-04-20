@@ -63,6 +63,11 @@ CREATE TABLE
     mnid     int PRIMARY KEY
 );
 
+# insert into Manager(first, last, email, phoneNum, mnid)
+# values ('nidhi', 'hosamane', 'dhiw', '91829', 820);
+#
+# select * from Manager
+
 
 CREATE TABLE
     IF NOT EXISTS Member
@@ -76,11 +81,11 @@ CREATE TABLE
     mcid       int,
     FOREIGN KEY
         (mcid) REFERENCES MarketingConsultant
-        (mcid),
+        (mcid) ON DELETE CASCADE,
     msid       int,
     FOREIGN KEY
         (msid) REFERENCES Membership
-        (msid),
+        (msid) ON DELETE CASCADE,
     phoneNum_1 varchar(20) NOT NULL,
     phoneNum_2 varchar(20),
     email_1    varchar(50) NOT NULL,
@@ -120,10 +125,14 @@ CREATE TABLE
         (tid)
 );
 
-CREATE TABLE IF NOT EXISTS Gym_Mem (
+CREATE TABLE
+    IF NOT EXISTS Gym_Mem
+(
     mid int,
     gid int NOT NULL,
-    FOREIGN KEY (mid) REFERENCES Member (mid) ON DELETE CASCADE,
+    FOREIGN KEY
+        (mid) REFERENCES Member
+        (mid) ON DELETE CASCADE,
     FOREIGN KEY (gid) REFERENCES Gym (gid) ON DELETE CASCADE
 );
 
@@ -144,7 +153,7 @@ CREATE TABLE
     interest varchar(50),
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid) ON DELETE CASCADE
+        (mid)
 );
 
 CREATE TABLE
@@ -159,7 +168,7 @@ CREATE TABLE
         (mcid),
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid) ON DELETE CASCADE
+        (mid)
 );
 
 CREATE TABLE
@@ -218,7 +227,7 @@ CREATE TABLE
     cid int,
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid), ON DELETE CASCADE
+        (mid),
     FOREIGN KEY
         (cid) REFERENCES Class
         (cid)
@@ -250,7 +259,7 @@ CREATE TABLE
     mid      int,
     FOREIGN KEY
         (mid) REFERENCES Member
-        (mid) ON DELETE CASCADE
+        (mid)
 );
 
 CREATE TABLE
@@ -262,7 +271,6 @@ CREATE TABLE
         (msid) REFERENCES Membership
         (msid)
 );
-
 
 
 insert into Manager (first, last, email, phoneNum, mnid)
@@ -1146,3 +1154,5 @@ insert into Train_Equip (tid, eid)
 values (642630, 683295);
 insert into Train_Equip (tid, eid)
 values (8598191, 912819);
+
+
