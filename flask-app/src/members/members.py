@@ -36,7 +36,7 @@ def get_classes():
     # get a cursor object from the database
     
     query = '''
-        SELECT name
+        SELECT name, startTime, endTime
         FROM Class
     '''
     # use cursor to query the database for a list of products
@@ -82,6 +82,133 @@ def update_type():
 
 
 
+@members.route('/membershipPrices', methods=['GET'])
+def get_membership_prices():
+    # get a cursor object from the database
+    
+    query = '''
+        SELECT type, price
+        FROM Membership
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+
+@members.route('/trainerNames', methods=['GET'])
+def get_trainers():
+    # get a cursor object from the database
+    
+    query = '''
+        SELECT first, last
+        FROM Trainer
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+
+@members.route('/gymHours', methods=['GET'])
+def get_hours():
+    # get a cursor object from the database
+    
+    query = '''
+        SELECT name, openTime, closeTime
+        FROM Gym
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+@members.route('/getPT', methods=['GET'])
+def get_personal_training():
+    # get a cursor object from the database
+    
+    query = '''
+        SELECT ptid, activity, length
+        FROM PersonalTraining
+    '''
+
+    # use cursor to query the database for a list of products
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    # grab the column headers from the returned data
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+
+    return jsonify(json_data)
+
+
+
 @members.route('/deleteAccount', methods=['DELETE'])
 def delete_account():
     the_data = request.json
@@ -95,6 +222,7 @@ def delete_account():
     cursor.execute(query)
     db.get_db().commit()
     return 'Member account deleted!'
+
 
 
 
