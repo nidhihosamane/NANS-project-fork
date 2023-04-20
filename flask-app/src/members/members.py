@@ -96,10 +96,10 @@ def update_type():
     the_data = request.json
     current_app.logger.info(the_data)
     
+    mid = the_data['mid']
     msid = the_data['msid']
-    type = the_data['type']
 
-    query = "UPDATE Member SET msid = '{}' WHERE msid = {}".format(msid, msid)
+    query = "UPDATE Member SET msid = '{}' WHERE mid = {}".format(msid, mid)
 
     current_app.logger.info(query)
     cursor = db.get_db().cursor()
